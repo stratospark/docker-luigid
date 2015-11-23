@@ -1,12 +1,18 @@
-FROM pulsepointinc/centos6-python27
+FROM centos:7
 
 CMD [ "luigid" ]
 
-RUN mkdir /etc/luigi
+EXPOSE 8082
+
+RUN adduser luigi && mkdir -p /etc/luigi
 ADD client.cfg /etc/luigi/client.cfg
 
 RUN \
-  conda install -y pip && \
+  curl -s -L -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
+  python /tmp/get-pip.py && \
   pip install \
     'luigi==1.3.0' \
-    'SQLAlchemy==1.0.8'
+    'SQLAlchemy==1.0.9' && \
+  rm -fr /tmp/*
+
+USER luigi
