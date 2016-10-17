@@ -1,18 +1,14 @@
-FROM centos:7
+FROM python:2-alpine
 
 CMD [ "luigid" ]
 
 EXPOSE 8082
 
-RUN adduser luigi && mkdir -p /etc/luigi
-ADD client.cfg /etc/luigi/client.cfg
-
 RUN \
-  curl -s -L -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
-  python /tmp/get-pip.py && \
+  mkdir -p /etc/luigi && \
   pip install \
-    'luigi==2.0.0' \
-    'SQLAlchemy==1.0.9' && \
-  rm -fr /tmp/*
+    'luigi==2.3.2' \
+    'SQLAlchemy==1.1.1' && \
+  rm -fr /root/.cache
 
-USER luigi
+COPY client.cfg /etc/luigi/client.cfg
