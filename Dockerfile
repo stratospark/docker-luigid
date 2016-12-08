@@ -1,14 +1,13 @@
-FROM python:2-alpine
-
-CMD [ "luigid" ]
-
-EXPOSE 8082
+FROM python:3.5-alpine
 
 RUN \
-  mkdir -p /etc/luigi && \
   pip install \
-    'luigi==2.3.2' \
-    'SQLAlchemy==1.1.1' && \
+    'luigi==2.4.0' \
+    'SQLAlchemy==1.1.4' && \
   rm -fr /root/.cache
 
-COPY client.cfg /etc/luigi/client.cfg
+CMD [ "/bin/start.sh" ]
+
+COPY ./files/bin/start.sh /bin/start.sh
+
+COPY ./files/etc/luigi/logging.conf /etc/luigi/logging.conf
